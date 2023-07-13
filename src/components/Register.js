@@ -27,7 +27,7 @@ export default function Register() {
         body: formData
       })
       if (response.status === 200) {
-        console.log("OK")
+        console.log("OKK")
       }
     }
   }
