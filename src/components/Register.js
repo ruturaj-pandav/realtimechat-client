@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 
+import { useNavigate } from "react-router-dom"
 const REGISTER_URL = `http://localhost:5000/register`
 export default function Register() {
+  let navigate = useNavigate()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [firstname, setFirstname] = useState("")
@@ -14,7 +16,9 @@ export default function Register() {
   };
 
   async function RegisterFunction() {
+    console.log("register1")
     if (email !== "" && password !== "") {
+      console.log("register2")
       const formData = new FormData();
       formData.append('file', fileData);
       formData.append('email', email);
@@ -22,13 +26,18 @@ export default function Register() {
       formData.append('firstname', firstname);
       formData.append('lastname', lastname);
       formData.append('status', status);
-      let response = await fetch(REGISTER_URL, {
+    
+      fetch(REGISTER_URL, {
         method: 'POST',
         body: formData
       })
-      if (response.status === 200) {
-        console.log("OKK")
-      }
+        .then(res => res.json()).then(jsonRes => {
+              localStorage.removeItem("rtc")
+              localStorage.setItem("rtc", JSON.stringify(jsonRes.token))
+              navigate(`/`)
+
+        })
+
     }
   }
   return (
